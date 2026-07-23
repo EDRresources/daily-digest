@@ -26,28 +26,32 @@ print(f"Date: {date_str}")
 
 pages_url = f"https://edrresources.github.io/daily-digest/{digest_file}"
 
-# Pull section headers (<h2>) from the digest HTML as a quick teaser list
-teasers_html = ""
+# Embed the full digest content in the email body (not just a link).
+inline_css = ""
+body_content = ""
 if os.path.exists(digest_file):
     with open(digest_file, encoding="utf-8") as f:
         html = f.read()
-    sections = re.findall(r"<h2[^>]*>(.*?)</h2>", html, re.IGNORECASE | re.DOTALL)
-    sections = [re.sub(r"<[^>]+>", "", s).strip() for s in sections]
-    if sections:
-        items = "".join(f'<li style="margin-bottom:4px;">{s}</li>' for s in sections)
-        teasers_html = (
-            '<p style="font-family:Georgia,serif;font-size:14px;color:#555;margin:12px 0 4px;">'
-            "Today's sections:</p>"
-            f'<ul style="font-family:Georgia,serif;font-size:14px;color:#2c1a00;margin:0 0 12px 18px;">{items}</ul>'
-        )
+
+    style_match = re.search(r"<style[^>]*>(.*?)</style>", html, re.IGNORECASE | re.DOTALL)
+    if style_match:
+        inline_css = style_match.group(1)
+
+    body_match = re.search(r"<body[^>]*>(.*?)</body>", html, re.IGNORECASE | re.DOTALL)
+    body_content = body_match.group(1) if body_match else html
+
+link_html = (
+    f'<p style="margin:16px 0;"><a href="{pages_url}" '
+    'style="font-family:Georgia,serif;font-size:14px;color:#7a4a00;font-weight:bold;text-decoration:none;">'
+    '&#9670; View on the web &rarr;</a></p>'
+    '<hr style="border:none;border-top:1px solid #c9a84c;margin:16px 0;">'
+)
 
 html_body = (
-    '<div style="font-family:Georgia,serif;max-width:600px;margin:0 auto;color:#2c1a00;">'
-    f'<p style="font-size:16px;margin:0 0 8px 0;"><strong>Daily Digest &mdash; {date_str}</strong></p>'
-    + teasers_html
-    + f'<p style="margin-top:20px;"><a href="{pages_url}" style="font-family:Georgia,serif;font-size:16px;color:#7a4a00;font-weight:bold;text-decoration:none;">&#9670; Open Today&rsquo;s Digest &rarr;</a></p>'
-    + '<hr style="border:none;border-top:1px solid #c9a84c;margin:20px 0 12px;">'
-    + '<p style="font-size:12px;color:#6b4f1a;margin:0;">Erik\'s Daily Digest &middot; sports, Birmingham news, Alzheimer\'s/FTD science</p>'
+    f'<style>{inline_css}</style>'
+    '<div style="max-width:700px;margin:0 auto;">'
+    + link_html
+    + body_content
     + '</div>'
 )
 
