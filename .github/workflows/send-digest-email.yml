@@ -1,0 +1,28 @@
+name: Send Daily Digest Email
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'digest_*.html'
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Send email via Gmail
+        env:
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          DIGEST_FILE=$(git diff --name-only HEAD~1 HEAD | grep 'digest_.*\.html' | head -1)
+          echo "Detected digest file: '$DIGEST_FILE'"
+          if [ -z "$DIGEST_FILE" ]; then
+            echo "No digest file detected — skipping."
+            exit 0
+          fi
+          DIGEST_FILE="$DIGEST_FILE" python3 send_email.py
