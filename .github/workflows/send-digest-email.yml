@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'digest_*.html'
+      - 'pubmed_*.html'
 
 jobs:
   send-email:
@@ -19,7 +20,7 @@ jobs:
         env:
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: |
-          DIGEST_FILE=$(git diff --name-only HEAD~1 HEAD | grep 'digest_.*\.html' | head -1)
+          DIGEST_FILE=$(git diff --name-only HEAD~1 HEAD | grep -E '^(digest_|pubmed_).*\.html$' | head -1)
           echo "Detected digest file: '$DIGEST_FILE'"
           if [ -z "$DIGEST_FILE" ]; then
             echo "No digest file detected — skipping."

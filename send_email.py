@@ -13,14 +13,25 @@ if not digest_file:
     sys.exit(0)
 
 basename = os.path.splitext(digest_file)[0]
+month_names = ["", "January", "February", "March", "April", "May", "June",
+               "July", "August", "September", "October", "November", "December"]
+
+subject_prefix = "Daily Digest"
+date_str = basename
+
 m = re.match(r"digest_(\d{4})(\d{2})(\d{2})", basename)
+pm = re.match(r"pubmed_(\d{4})(\d{2})(\d{2})_?(.*)", basename)
+
 if m:
     year, month_num, day_num = int(m.group(1)), int(m.group(2)), int(m.group(3))
-    month_names = ["", "January", "February", "March", "April", "May", "June",
-                   "July", "August", "September", "October", "November", "December"]
     date_str = f"{month_names[month_num]} {day_num}, {year}"
-else:
-    date_str = basename
+    subject_prefix = "Daily Digest"
+elif pm:
+    year, month_num, day_num = int(pm.group(1)), int(pm.group(2)), int(pm.group(3))
+    date_str = f"{month_names[month_num]} {day_num}, {year}"
+    topic_slug = pm.group(4)
+    topic_title = topic_slug.replace("_", " ").replace("-", " ").strip().title() if topic_slug else ""
+    subject_prefix = f"PubMed Digest — {topic_title}" if topic_title else "PubMed Digest"
 
 print(f"Date: {date_str}")
 
@@ -63,7 +74,7 @@ print(f"GMAIL_APP_PASSWORD present: {bool(gmail_password)} (length {len(gmail_pa
 print(f"Sending to: {recipients}")
 
 msg = MIMEMultipart("alternative")
-msg["Subject"] = f"Daily Digest — {date_str}"
+msg["Subject"] = f"{subject_prefix} — {date_str}"
 msg["From"] = gmail_user
 msg["To"] = ", ".join(recipients)
 msg.attach(MIMEText(html_body, "html"))
