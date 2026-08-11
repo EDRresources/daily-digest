@@ -61,6 +61,38 @@
     font-style: italic;
     font-size: 14px;
   }
+  table.markets {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 18px;
+    font-size: 14px;
+  }
+  table.markets th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #555;
+    border-bottom: 2px solid #2c3e50;
+    padding: 6px 10px;
+  }
+  table.markets td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+    color: #1e1e1e;
+  }
+  table.markets td.name {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  table.markets td.chg {
+    text-align: right;
+  }
+  .chg-up-lg { background-color: #a8ddb5; }
+  .chg-up-sm { background-color: #e0f3db; }
+  .chg-flat { background-color: #f0f0ec; }
+  .chg-down-sm { background-color: #fde0dd; }
+  .chg-down-lg { background-color: #fbb4ae; }
 </style>
 </head>
 <body>
@@ -112,9 +144,16 @@
 <p class="note">Nothing new since yesterday's digest — offseason, no games on the schedule yet; regular season tips off in November.</p>
 
 <h2>Markets</h2>
+<p>A down day on Wall Street Monday, pulling back from last week's record highs:</p>
+<table class="markets">
+<tr><th>Index</th><th>Value</th><th>Change</th><th>% Change</th></tr>
+<tr><td class="name">Dow Jones</td><td>53,976.00</td><td class="chg chg-down-sm">-60.93</td><td class="chg chg-down-sm">-0.11%</td></tr>
+<tr><td class="name">S&amp;P 500</td><td>7,753.04</td><td class="chg chg-down-sm">-4.60</td><td class="chg chg-down-sm">-0.06%</td></tr>
+<tr><td class="name">Nasdaq Composite</td><td>26,605.02</td><td class="chg chg-down-sm">-85.60</td><td class="chg chg-down-sm">-0.32%</td></tr>
+<tr><td class="name">10-Yr Treasury Yield</td><td>4.70%</td><td class="chg chg-up-sm">+2 bps</td><td class="chg chg-up-sm">—</td></tr>
+</table>
 <ul>
-<li>A down day on Wall Street Monday: the <strong>Dow</strong> fell 0.11% (about -61 pts) to 53,976, the <strong>S&amp;P 500</strong> slipped 0.06% (about -5 pts) to 7,753, and the <strong>Nasdaq Composite</strong> dropped 0.32% (about -86 pts) to 26,605, pulling back from last week's record highs.</li>
-<li>The <strong>10-year Treasury yield</strong> rose to around 4.70%, its highest level so far this month, as rising oil prices stoked fresh inflation concerns.</li>
+<li>The 10-year yield's rise to around 4.70% is its highest level so far this month, as rising oil prices stoked fresh inflation concerns.</li>
 <li>Oil prices climbed on continued uncertainty over when the Strait of Hormuz will reopen; energy stocks were the best performers while tech and real estate lagged.</li>
 <li>Intel fell about 4% after announcing a $15 billion common stock offering; Nvidia (-2.9%) and Apple (-1.5%) were also notable laggards.</li>
 <li>Focus this week turns to inflation data: July CPI is out Wednesday, PPI on Thursday, and retail sales plus the University of Michigan sentiment reading on Friday — all being watched closely by the Fed after last week's weaker-than-expected July jobs report.</li>
